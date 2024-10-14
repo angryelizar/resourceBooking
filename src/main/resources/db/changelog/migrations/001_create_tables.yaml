@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-create-tables
+      id: 001_create_tables
       author: angryelizar
       changes:
         - createTable:
