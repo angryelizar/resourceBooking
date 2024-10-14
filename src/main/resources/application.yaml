@@ -8,5 +8,8 @@ spring:
     change-log: classpath:db/changelog/master.yaml
   application:
     name: Resource Booking
+  jpa:
+    hibernate:
+      ddl-auto: validate
 server:
   port: 8089
