@@ -55,6 +55,11 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: authority_fk_users
                     references: authorities(id)
+              - column:
+                  name: is_enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: resources
             columns:
@@ -248,6 +253,11 @@ databaseChangeLog:
               - column:
                   name: credentials
                   type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(10,1)
                   constraints:
                     nullable: false
 
