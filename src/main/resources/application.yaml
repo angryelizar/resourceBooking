@@ -15,3 +15,16 @@ spring:
       ddl-auto: validate
 server:
   port: 8089
+logging:
+  file:
+    name: logs/app.log
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.zaxxer.hikari: ERROR
+    liquibase: ERROR
+    org.springframework.security: ERROR
+  logback:
+    rollingpolicy:
+      max-history: 5
+      max-file-size: 10MB
