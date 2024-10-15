@@ -10,7 +10,7 @@
     </parent>
     <groupId>kg.angryelizar</groupId>
     <artifactId>ResourceBooking</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>ResourceBooking</name>
     <description>ResourceBooking</description>
     <url/>
@@ -46,7 +46,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

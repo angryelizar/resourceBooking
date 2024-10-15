@@ -8,6 +8,8 @@ spring:
     change-log: classpath:db/changelog/master.yaml
   application:
     name: Resource Booking
+    description: Этот API предоставляет возможность управлять бронированием ресурсов. Включает возможности для создания, редактирования и удаления бронирований, а также интеграцию с платежными системами для обработки оплаты.
+    version: 1.0
   jpa:
     hibernate:
       ddl-auto: validate
