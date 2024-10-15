@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005_not_null_for_payment_method_code
+      author: angryelizar
+      changes:
+        - addNotNullConstraint:
+            tableName: payment_methods
+            columnName: code

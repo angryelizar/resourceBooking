@@ -1,9 +1,11 @@
 package kg.angryelizar.resourcebooking.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
-public enum PaymentStatuses {
+public enum PaymentStatus {
     PENDING("PENDING"),
     CONFIRMED("CONFIRMED"),
     CANCELLED("CANCELLED");

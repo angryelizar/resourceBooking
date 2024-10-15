@@ -1,6 +1,7 @@
 package kg.angryelizar.resourcebooking.exceptions.handler;
 
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
+import kg.angryelizar.resourcebooking.exceptions.PaymentException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.service.ErrorService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,12 @@ public class GlobalExceptionHandler {
     private final ErrorService errorService;
 
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<ErrorResponseBody> userAlreadyRegistered(UserException exception) {
+    public ResponseEntity<ErrorResponseBody> userException(UserException exception) {
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PaymentException.class)
+    public ResponseEntity<ErrorResponseBody> paymentException(PaymentException exception) {
         return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
     }
 

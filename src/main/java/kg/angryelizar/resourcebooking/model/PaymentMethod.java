@@ -19,6 +19,7 @@ public class PaymentMethod extends BaseEntity {
     private String description;
     @Column(name = "credentials_example")
     private String credentialsExample;
+    private String code;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentMethod")
     private List<Payment> payments;

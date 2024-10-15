@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003_update_payment_methods_table
+      author: angryelizar
+      changes:
+        - addColumn:
+            tableName: payment_methods
+            columns:
+              - column:
+                  name: code
+                  type: varchar(50)

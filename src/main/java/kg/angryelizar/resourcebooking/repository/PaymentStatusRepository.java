@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PaymentStatusRepository extends JpaRepository<PaymentStatus, Long> {
+    PaymentStatus findByStatus(String paymentStatus);
 }
