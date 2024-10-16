@@ -1,5 +1,6 @@
 package kg.angryelizar.resourcebooking.configuration;
 
+import kg.angryelizar.resourcebooking.enums.Authority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,8 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final static String ADMIN_ROLE = "ADMIN";
-    private final static String USER_ROLE = "USER";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,21 +38,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/resources/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/payments/methods").permitAll()
                         // Те пути, которые доступны только обычным пользователям (роль USER)
-                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(USER_ROLE)
-                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(USER_ROLE)
-                        .requestMatchers(HttpMethod.POST, "/bookings/**/payments").hasAuthority(USER_ROLE)
-                        .requestMatchers(HttpMethod.GET, "/profile/bookings").hasAuthority(USER_ROLE)
-                        .requestMatchers(HttpMethod.GET, "/profile/payments").hasAuthority(USER_ROLE)
+                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.POST, "/bookings/**/payments").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.GET, "/profile/bookings").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.GET, "/profile/payments").hasAuthority(Authority.USER.getName())
                         // Те пути, которые доступны только администраторам (роль ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/payments/").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.GET, "/bookings/").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.POST, "/resources").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.PUT, "/resources/**").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.DELETE, "/resources/**").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.PUT, "/payments/**").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.DELETE, "/payments/**").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(ADMIN_ROLE)
+                        .requestMatchers(HttpMethod.GET, "/payments/").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.GET, "/bookings/").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.POST, "/resources").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.PUT, "/resources/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.DELETE, "/resources/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.PUT, "/payments/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.DELETE, "/payments/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
                         .anyRequest().permitAll());
         return http.build();
     }

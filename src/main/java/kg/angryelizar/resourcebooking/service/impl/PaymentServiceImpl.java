@@ -1,4 +1,4 @@
-package kg.angryelizar.resourcebooking.service;
+package kg.angryelizar.resourcebooking.service.impl;
 
 import kg.angryelizar.resourcebooking.exceptions.PaymentException;
 import kg.angryelizar.resourcebooking.strategy.PaymentStrategy;
@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentService {
+public class PaymentServiceImpl {
     private final Map<String, PaymentStrategy> paymentStrategies;
 
     public void executePayment(Long bookingId, String method, BigDecimal amount, String credentials) {

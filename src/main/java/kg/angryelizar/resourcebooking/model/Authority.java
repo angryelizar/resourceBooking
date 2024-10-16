@@ -15,7 +15,7 @@ import java.util.List;
 public class Authority extends BaseEntity {
     private String authority;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "authority")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "authority")
     @ToString.Exclude
     private List<User> users;
 }

@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -22,13 +23,13 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @JoinColumn(name = "authority_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Authority authority;
 
     @Column(name = "is_enabled")
     private Boolean isEnabled;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
     private List<Booking> bookings;
 
     @Override

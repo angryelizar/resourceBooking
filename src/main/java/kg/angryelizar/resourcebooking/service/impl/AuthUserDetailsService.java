@@ -1,4 +1,4 @@
-package kg.angryelizar.resourcebooking.service;
+package kg.angryelizar.resourcebooking.service.impl;
 
 import kg.angryelizar.resourcebooking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package kg.angryelizar.resourcebooking.service;
+package kg.angryelizar.resourcebooking.service.impl;
 
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package kg.angryelizar.resourcebooking.service;
+package kg.angryelizar.resourcebooking.service.impl;
 
 import kg.angryelizar.resourcebooking.enums.PaymentStatus;
 import kg.angryelizar.resourcebooking.exceptions.PaymentException;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FakePaymentService {
+public class FakePaymentServiceImpl {
     private final PaymentRepository paymentRepository;
     private final BookingRepository bookingRepository;
     private final PaymentMethodRepository paymentMethodRepository;
