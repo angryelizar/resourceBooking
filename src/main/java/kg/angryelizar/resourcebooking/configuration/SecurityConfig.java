@@ -40,7 +40,7 @@ public class SecurityConfig {
                         // Те пути, которые доступны только обычным пользователям (роль USER)
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(Authority.USER.getName())
-                        .requestMatchers(HttpMethod.POST, "/bookings/**/payments").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.GET, "/profile/bookings").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.GET, "/profile/payments").hasAuthority(Authority.USER.getName())
                         // Те пути, которые доступны только администраторам (роль ADMIN)

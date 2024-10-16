@@ -2,15 +2,17 @@ package kg.angryelizar.resourcebooking.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
+@Builder
 @Schema(description = "DTO для регистрации пользователя")
 public record UserDTO(
         @NotEmpty(message = "Имя не может быть пустым!")
-        @NotNull(message = "Имя не может быть пустым!")
+        @NotNull(message = "Имя не может быть null!")
         @Schema(description = "Имя пользователя", example = "Дастан")
         String name,
         @NotEmpty(message = "Фамилия не может быть пустой!")
-        @NotNull(message = "Фамилия не может быть пустой!")
+        @NotNull(message = "Фамилия не может быть null!")
         @Schema(description = "Фамилия пользователя", example = "Жапаров")
         String surname,
         @Email(message = "Это не очень похоже на электронную почту...")

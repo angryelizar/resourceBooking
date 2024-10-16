@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException(String.format("Пользователь с почтой %s уже существует!", userDTO.email()));
         }
 
-        userRepository.save(User.builder()
+       User registeredUser =  userRepository.save(User.builder()
                         .authority(authorityRepository.findByAuthority(Authority.USER.getName()))
                         .name(userDTO.name())
                         .surname(userDTO.surname())
@@ -40,7 +40,13 @@ public class UserServiceImpl implements UserService {
                         .password(passwordEncoder.encode(userDTO.password()))
                         .isEnabled(true)
                 .build());
-
+        log.info("Зарегистрирован новый пользователь -  {}", registeredUser.getEmail());
         return HttpStatus.CREATED;
+    }
+
+
+    @Override
+    public Boolean isAdministrator(User user) {
+        return user.getAuthority().getAuthority().equalsIgnoreCase(Authority.ADMIN.getName());
     }
 }

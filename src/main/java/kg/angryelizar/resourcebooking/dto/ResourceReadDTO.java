@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
 @Schema(description = "DTO для просмотра информации о ресурсе")
-public record ResourceReadDto(
+public record ResourceReadDTO(
         @Schema(description = "Идентификатор ресурса", example = "1")
         Long id,
         @Schema(description = "Название ресурса", example = "Hyatt Regency Bishkek")

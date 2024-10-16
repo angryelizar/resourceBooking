@@ -1,10 +1,7 @@
 package kg.angryelizar.resourcebooking.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder(builderMethodName = "resourceBuilder")
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "resources")
@@ -25,4 +23,10 @@ public class Resource extends BaseEntityAudit {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "resource")
     private List<Booking> bookings;
+
+    public static class ResourceBuilder {
+        public Resource.ResourceBuilder updatedBy(User updatedBy) {
+            return this;
+        }
+    }
 }
