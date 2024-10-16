@@ -2,6 +2,7 @@ package kg.angryelizar.resourcebooking.service;
 
 import kg.angryelizar.resourcebooking.dto.ResourceCreateEditDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,6 @@ public interface ResourceService {
     ResourceReadDTO create(ResourceCreateEditDTO resource, Authentication authentication);
 
     ResourceReadDTO update(Long resourceId, ResourceCreateEditDTO resourceDTO, Authentication authentication);
+
+    HttpStatus delete(Long resourceId, Authentication authentication);
 }

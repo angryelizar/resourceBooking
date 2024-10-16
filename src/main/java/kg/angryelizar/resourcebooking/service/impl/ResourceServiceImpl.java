@@ -4,15 +4,19 @@ import kg.angryelizar.resourcebooking.dto.ResourceCreateEditDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
+import kg.angryelizar.resourcebooking.model.Booking;
 import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.model.User;
+import kg.angryelizar.resourcebooking.repository.BookingRepository;
 import kg.angryelizar.resourcebooking.repository.ResourceRepository;
 import kg.angryelizar.resourcebooking.repository.UserRepository;
+import kg.angryelizar.resourcebooking.service.BookingService;
 import kg.angryelizar.resourcebooking.service.ResourceService;
 import kg.angryelizar.resourcebooking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,8 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository resourceRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
 
     @Override
     public List<ResourceReadDTO> findAll(Integer page, Integer pageSize, Boolean active) {
@@ -59,7 +65,7 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         if (Boolean.FALSE.equals(userService.isAdministrator(maybeAuthor.get()))){
-            log.error("Пользователь {} не администратор и не может создать ресурс!", maybeAuthor.get().getEmail());
+            log.error("Пользователь {} не администратор и не может создать/отредактировать/удалить ресурс!", maybeAuthor.get().getEmail());
             throw new UserException("Вы не администратор для этого действия!");
         }
         return maybeAuthor.get();
@@ -79,6 +85,17 @@ public class ResourceServiceImpl implements ResourceService {
 
         log.info("Ресурс {} обновлен, автор изменений - {} {}", resourceDTO.title(), author.getName(), author.getSurname());
         return toResourceReadDto(resource);
+    }
+
+    @Override
+    public HttpStatus delete(Long resourceId, Authentication authentication) {
+        Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new ResourceException("Этот ресурс не найден, ID " + resourceId));
+        User author = checkAuthor(authentication);
+        bookingService.deleteBookingsByResource(resource);
+        resourceRepository.delete(resource);
+
+        log.info("Ресурс {} ({}) удален, автор {} {}", resource.getTitle(), resourceId, author.getName(), author.getSurname());
+        return HttpStatus.OK;
     }
 
     private ResourceReadDTO toResourceReadDto(Resource resource) {

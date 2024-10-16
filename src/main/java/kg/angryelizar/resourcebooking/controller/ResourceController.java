@@ -13,6 +13,7 @@ import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.ResourceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,17 @@ public class ResourceController {
     })
     public ResponseEntity<ResourceReadDTO> updateResource(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody ResourceCreateEditDTO resourceDTO, Authentication authentication) {
         return ResponseEntity.ok(resourceService.update(resourceId, resourceDTO, authentication));
+    }
+
+    @DeleteMapping("/{resourceId}")
+    @Operation(summary = "Удаление ресурса (доступно только администраторам)", tags = "Resource")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - ресурс удален", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<HttpStatus> deleteResource(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, Authentication authentication) {
+        return ResponseEntity.ok(resourceService.delete(resourceId, authentication));
     }
 
 }

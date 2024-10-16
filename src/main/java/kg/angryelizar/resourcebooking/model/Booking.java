@@ -23,7 +23,7 @@ public class Booking extends BaseEntityAudit {
     @Column(name = "is_confirmed")
     private Boolean isConfirmed;
     @JoinColumn(name = "resource_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Resource resource;
     @JoinColumn(name = "author_id")
     @ManyToOne(fetch = FetchType.LAZY)
