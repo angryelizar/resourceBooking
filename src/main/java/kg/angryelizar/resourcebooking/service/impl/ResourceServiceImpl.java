@@ -1,7 +1,8 @@
 package kg.angryelizar.resourcebooking.service.impl;
 
-import kg.angryelizar.resourcebooking.dto.ResourceCreateDTO;
+import kg.angryelizar.resourcebooking.dto.ResourceCreateEditDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
+import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.model.User;
@@ -33,7 +34,24 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public ResourceReadDTO create(ResourceCreateDTO resource, Authentication authentication) {
+    public ResourceReadDTO create(ResourceCreateEditDTO resource, Authentication authentication) {
+      User author = checkAuthor(authentication);
+
+        Resource savedResource = Resource.resourceBuilder()
+                .title(resource.title())
+                .description(resource.description())
+                .isActive(resource.isActive())
+                .hourlyRate(BigDecimal.valueOf(resource.hourlyRate()))
+                .build();
+        savedResource.setUpdatedBy(author);
+
+        ResourceReadDTO result = toResourceReadDto(resourceRepository.save(savedResource));
+        log.info("Создан новый ресурс {}, автор - {}", result.title(), result.updatedByName());
+
+        return result;
+    }
+
+    private User checkAuthor(Authentication authentication) {
         Optional<User> maybeAuthor = userRepository.getByEmail(authentication.getName());
         if (maybeAuthor.isEmpty()) {
             log.error("Пользователь {} не найден", authentication.getName());
@@ -44,17 +62,23 @@ public class ResourceServiceImpl implements ResourceService {
             log.error("Пользователь {} не администратор и не может создать ресурс!", maybeAuthor.get().getEmail());
             throw new UserException("Вы не администратор для этого действия!");
         }
+        return maybeAuthor.get();
+    }
 
-        Resource savedResource = Resource.resourceBuilder()
-                .title(resource.title())
-                .description(resource.description())
-                .isActive(resource.isActive())
-                .hourlyRate(BigDecimal.valueOf(resource.hourlyRate()))
-                .build();
-        savedResource.setUpdatedBy(maybeAuthor.get());
-        ResourceReadDTO result = toResourceReadDto(resourceRepository.save(savedResource));
-        log.info("Создан новый ресурс {}, автор - {}", result.title(), result.updatedByName());
-        return result;
+    @Override
+    public ResourceReadDTO update(Long resourceId, ResourceCreateEditDTO resourceDTO, Authentication authentication) {
+        Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new ResourceException("Этот ресурс не найден, ID " + resourceId));
+        User author = checkAuthor(authentication);
+
+        resource.setTitle(resourceDTO.title());
+        resource.setDescription(resourceDTO.description());
+        resource.setIsActive(resourceDTO.isActive());
+        resource.setHourlyRate(BigDecimal.valueOf(resourceDTO.hourlyRate()));
+        resource.setUpdatedBy(author);
+        resourceRepository.save(resource);
+
+        log.info("Ресурс {} обновлен, автор изменений - {} {}", resourceDTO.title(), author.getName(), author.getSurname());
+        return toResourceReadDto(resource);
     }
 
     private ResourceReadDTO toResourceReadDto(Resource resource) {

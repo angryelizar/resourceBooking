@@ -2,6 +2,7 @@ package kg.angryelizar.resourcebooking.exceptions.handler;
 
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.exceptions.PaymentException;
+import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.service.impl.ErrorService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,6 +39,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseBody> patternParseException(HttpMessageNotReadableException exception) {
+        log.error(exception.getMessage());
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceException.class)
+    public ResponseEntity<ErrorResponseBody> resourceException(ResourceException exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
     }

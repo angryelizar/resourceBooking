@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kg.angryelizar.resourcebooking.dto.ResourceCreateDTO;
+import kg.angryelizar.resourcebooking.dto.ResourceCreateEditDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.ResourceService;
@@ -50,8 +50,20 @@ public class ResourceController {
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
-    public ResponseEntity<ResourceReadDTO> createResource(@Valid @RequestBody ResourceCreateDTO resource, Authentication authentication) {
+    public ResponseEntity<ResourceReadDTO> createResource(@Valid @RequestBody ResourceCreateEditDTO resource, Authentication authentication) {
         return ResponseEntity.ok(resourceService.create(resource, authentication));
+    }
+
+    @PutMapping("/{resourceId}")
+    @Operation(summary = "Редактирование ресурса (доступно только администраторам)", tags = "Resource")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - ресурс отредактирован", content = @Content(schema = @Schema(implementation = ResourceReadDTO.class))),
+            @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<ResourceReadDTO> updateResource(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody ResourceCreateEditDTO resourceDTO, Authentication authentication) {
+        return ResponseEntity.ok(resourceService.update(resourceId, resourceDTO, authentication));
     }
 
 }

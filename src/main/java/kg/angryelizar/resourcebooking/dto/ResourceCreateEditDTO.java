@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-@Schema(description = "DTO для создания ресурса (доступно только администраторам)")
-public record ResourceCreateDTO(
+@Schema(description = "DTO для создания/редактирования ресурса (доступно только администраторам)")
+public record ResourceCreateEditDTO(
         @Schema(description = "Название ресурса", example = "Hyatt Regency Bishkek")
         @NotEmpty(message = "Название ресурса не может быть пустым!")
         @NotNull(message = "Название ресурса не может быть null!")
