@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/profile/payments").hasAuthority(Authority.USER.getName())
                         // Те пути, которые доступны только администраторам (роль ADMIN)
                         .requestMatchers(HttpMethod.GET, "/payments/").hasAuthority(Authority.ADMIN.getName())
-                        .requestMatchers(HttpMethod.GET, "/bookings/").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.GET, "/bookings").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.POST, "/resources").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.PUT, "/resources/**").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.DELETE, "/resources/**").hasAuthority(Authority.ADMIN.getName())

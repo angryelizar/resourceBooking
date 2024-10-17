@@ -10,6 +10,7 @@ import kg.angryelizar.resourcebooking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean isAdministrator(User user) {
         return user.getAuthority().getAuthority().equalsIgnoreCase(Authority.ADMIN.getName());
+    }
+
+    @Override
+    public User checkAdministrator(Authentication authentication) {
+        Optional<User> maybeAuthor = userRepository.getByEmail(authentication.getName());
+        if (maybeAuthor.isEmpty()) {
+            log.error("Пользователь {} не найден", authentication.getName());
+            throw new UserException(String.format("Пользователь %s не найден", authentication.getName()));
+        }
+
+        if (Boolean.FALSE.equals(isAdministrator(maybeAuthor.get()))){
+            log.error("Пользователь {} не администратор и не может создать/отредактировать/удалить ресурс!", maybeAuthor.get().getEmail());
+            throw new UserException("Вы не администратор для этого действия!");
+        }
+        return maybeAuthor.get();
     }
 }

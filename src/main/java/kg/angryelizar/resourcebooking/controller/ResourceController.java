@@ -39,7 +39,8 @@ public class ResourceController {
     public ResponseEntity<List<ResourceReadDTO>> getResources(
             @Parameter(description = "Номер страницы (начинается от 0)") @RequestParam(defaultValue = "0") Integer page,
             @Parameter(description = "Размер страницы (по умолчанию - 5)") @RequestParam(defaultValue = "5") Integer size,
-            @Parameter(description = "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)") @RequestParam(defaultValue = "true") Boolean isActive) {
+            @Parameter(description = "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)")
+            @RequestParam(defaultValue = "true") Boolean isActive) {
         return ResponseEntity.ok(resourceService.findAll(page, size, isActive));
     }
 
