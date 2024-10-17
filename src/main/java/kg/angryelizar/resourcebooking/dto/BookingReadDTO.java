@@ -20,9 +20,9 @@ public record BookingReadDTO(
         LocalDateTime endDate,
         @Schema(description = "Статус подтверждения брони, true - бронь оплачена, false - не оплачено")
         Boolean isConfirmed,
-        @Schema(description = "Имя и фамилия человека, который осуществил бронирование")
+        @Schema(description = "Имя и фамилия человека, который осуществил бронирование",  example = "Камчыбек Жапаров")
         String author,
-        @Schema(description = "Имя пользователя, обновившего бронирование в последний раз")
+        @Schema(description = "Имя пользователя, обновившего бронирование в последний раз", example = "Садыр Ташиев")
         String updatedByName,
         @Schema(description = "Дата создания бронирования")
         LocalDateTime createdAt,

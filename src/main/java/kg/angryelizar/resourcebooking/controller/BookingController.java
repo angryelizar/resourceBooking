@@ -33,6 +33,7 @@ public class BookingController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = BookingReadDTO.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не администратор", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<List<BookingReadDTO>> getBookings(
@@ -49,6 +50,7 @@ public class BookingController {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - бронирование создано", content = @Content(schema = @Schema(implementation = BookingReadDTO.class))),
             @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не обычный юзер", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<BookingReadDTO> booking(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody BookingCreateDTO bookingCreateDTO, Authentication authentication) {

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -76,6 +77,15 @@ public class ResourceServiceImpl implements ResourceService {
 
         log.info("Ресурс {} ({}) удален, автор {} {}", resource.getTitle(), resourceId, author.getName(), author.getSurname());
         return HttpStatus.OK;
+    }
+
+    @Override
+    public Boolean isAvailableForBookingById(Long resourceId) {
+        Optional<Resource> resource = resourceRepository.findById(resourceId);
+        if (resource.isPresent()) {
+            return resource.get().getIsActive();
+        }
+        return false;
     }
 
     private ResourceReadDTO toResourceReadDto(Resource resource) {

@@ -50,6 +50,7 @@ public class ResourceController {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - ресурс создан", content = @Content(schema = @Schema(implementation = ResourceReadDTO.class))),
             @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не администратор", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<ResourceReadDTO> createResource(@Valid @RequestBody ResourceCreateEditDTO resource, Authentication authentication) {
@@ -62,6 +63,7 @@ public class ResourceController {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - ресурс отредактирован", content = @Content(schema = @Schema(implementation = ResourceReadDTO.class))),
             @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не администратор", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<ResourceReadDTO> updateResource(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody ResourceCreateEditDTO resourceDTO, Authentication authentication) {
@@ -73,6 +75,7 @@ public class ResourceController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - ресурс удален", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не администратор", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<HttpStatus> deleteResource(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, Authentication authentication) {
