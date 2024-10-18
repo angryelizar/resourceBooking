@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
+import kg.angryelizar.resourcebooking.dto.PaymentProfileReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import kg.angryelizar.resourcebooking.service.PaymentService;
@@ -42,6 +43,21 @@ public class ProfileController {
             @Parameter(description = "Номер страницы (начинается от 0)") @RequestParam(defaultValue = "0") Integer page,
             @Parameter(description = "Размер страницы (по умолчанию - 5)") @RequestParam(defaultValue = "5") Integer size) {
         return ResponseEntity.ok(bookingService.findAllForUser(authentication, page, size));
+    }
+
+    @GetMapping("/payments")
+    @Operation(summary = "Просмотр всех платежей", tags = "Profile")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = PaymentProfileReadDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто нужен", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<List<PaymentProfileReadDTO>> paymentsProfile(
+            Authentication authentication,
+            @Parameter(description = "Номер страницы (начинается от 0)") @RequestParam(defaultValue = "0") Integer page,
+            @Parameter(description = "Размер страницы (по умолчанию - 5)") @RequestParam(defaultValue = "5") Integer size) {
+        return ResponseEntity.ok(paymentService.findAllForUser(authentication, page, size));
     }
 
 }

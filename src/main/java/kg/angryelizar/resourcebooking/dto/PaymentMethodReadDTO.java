@@ -1,7 +1,6 @@
 package kg.angryelizar.resourcebooking.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
 @Schema(description = "DTO для просмотра информации о методе оплаты")
 public record PaymentMethodReadDTO(
