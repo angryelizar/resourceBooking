@@ -14,7 +14,6 @@ import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bookings")
-@Slf4j
 @Tag(name = "Управление бронированиями",
         description = "Бронирование ресурса, отмена брони и ее оплата для обычного пользователя, а также просмотр, редактирование и удаление для администратора")
 public class BookingController {
@@ -50,7 +48,7 @@ public class BookingController {
     @PostMapping("/resources/{resourceId}")
     @Operation(summary = "Бронирование ресурса (доступно только обычному пользователю)", tags = "Booking")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - бронирование создано", content = @Content(schema = @Schema(implementation = BookingReadDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - бронирование создано", content = @Content(schema = @Schema(implementation = BookingSavedDTO.class))),
             @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не обычный юзер", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
