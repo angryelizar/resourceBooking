@@ -31,7 +31,7 @@ public class ProfileController {
     private final PaymentService paymentService;
 
     @GetMapping("/bookings")
-    @Operation(summary = "Просмотр всех бронирований (подтвержденных и неподтвержденных)", tags = "Profile")
+    @Operation(summary = "Просмотр всех бронирований (подтвержденных и неподтвержденных), пагинация", tags = "Profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = BookingProfileReadDTO.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
@@ -46,7 +46,7 @@ public class ProfileController {
     }
 
     @GetMapping("/payments")
-    @Operation(summary = "Просмотр всех платежей", tags = "Profile")
+    @Operation(summary = "Просмотр всех платежей, пагинация", tags = "Profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = PaymentProfileReadDTO.class))),
             @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),

@@ -1,7 +1,7 @@
 package kg.angryelizar.resourcebooking.service.impl;
 
-import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentProfileReadDTO;
+import kg.angryelizar.resourcebooking.dto.PaymentReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.PaymentException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.model.Payment;
@@ -17,8 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
     private final Map<String, PaymentStrategy> paymentStrategies;
+    private static final String NAME_PATTERN = "%s %s";
 
     public void executePayment(Long bookingId, String method, BigDecimal amount, String credentials) {
         PaymentStrategy paymentStrategy = paymentStrategies.get(method.toLowerCase());
@@ -48,9 +47,26 @@ public class PaymentServiceImpl implements PaymentService {
                 .toList();
     }
 
+    @Override
+    public List<PaymentReadDTO> findAll(Integer page, Integer size) {
+        return paymentRepository.findAll(PageRequest.of(page, size)).getContent()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
     private PaymentProfileReadDTO toProfileDTO(Payment payment) {
         return new PaymentProfileReadDTO(payment.getBooking().getResource().getTitle(), payment.getPaymentMethod().getTitle(),
                 payment.getPaymentStatus().getStatus(), payment.getBooking().getResource().getId(), payment.getBooking().getId(),
                 payment.getCredentials(), payment.getAmount().doubleValue(), payment.getCreatedAt());
+    }
+
+    private PaymentReadDTO toDTO(Payment payment) {
+        User updatedBy = payment.getUpdatedBy();
+        String updatedAuthorName = String.format(NAME_PATTERN, updatedBy.getName(), updatedBy.getSurname());
+        return new PaymentReadDTO(payment.getBooking().getResource().getTitle(), payment.getPaymentMethod().getTitle(),
+                payment.getPaymentStatus().getStatus(), payment.getBooking().getResource().getId(), payment.getBooking().getId(),
+                payment.getId(), payment.getCredentials(), payment.getAmount().doubleValue(), updatedAuthorName,
+                payment.getCreatedAt(), payment.getUpdatedAt());
     }
 }
