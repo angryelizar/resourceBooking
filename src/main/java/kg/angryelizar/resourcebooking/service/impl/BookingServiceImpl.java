@@ -2,9 +2,11 @@ package kg.angryelizar.resourcebooking.service.impl;
 
 import jakarta.transaction.Transactional;
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
+import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
+import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.model.Booking;
 import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.model.User;
@@ -72,7 +74,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceException("Бронирование недоступно, есть перекрытие по другой брони либо вы пытаетесь забронировать слишком заранее :)");
         }
 
-        User author = userRepository.getByEmail(authentication.getName()).orElseThrow();
+        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
 
 
         Booking booking = Booking.builder()
@@ -110,6 +112,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingReadDTO> findAll(Integer page, Integer size, Boolean isConfirmed) {
         return bookingRepository.findByIsConfirmed(isConfirmed, PageRequest.of(page, size)).getContent().stream().map(this::toDTO).toList();
+    }
+
+    @Override
+    public List<BookingProfileReadDTO> findAllForUser(Authentication authentication) {
+        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
+        return bookingRepository.findByAuthor(author).stream().map(this::toProfileDTO).toList();
     }
 
     private Boolean isOverlapLocalDateTime(LocalDateTime a, LocalDateTime b, LocalDateTime c, LocalDateTime d) {
@@ -178,6 +186,12 @@ public class BookingServiceImpl implements BookingService {
         String updatedAuthorName = String.format(NAME_PATTERN, updatedBy.getName(), updatedBy.getSurname());
         return new BookingReadDTO(booking.getResource().getTitle(), booking.getResource().getId(), booking.getId(),
                 booking.getStartDate(), booking.getEndDate(), booking.getIsConfirmed(), authorName, updatedAuthorName,
+                booking.getCreatedAt(), booking.getUpdatedAt());
+    }
+
+    private BookingProfileReadDTO toProfileDTO(Booking booking) {
+        return new BookingProfileReadDTO(booking.getResource().getTitle(), booking.getResource().getId(), booking.getId(),
+                booking.getStartDate(), booking.getEndDate(), booking.getIsConfirmed(),
                 booking.getCreatedAt(), booking.getUpdatedAt());
     }
 }

@@ -1,6 +1,7 @@
 package kg.angryelizar.resourcebooking.service;
 
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
+import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.model.Resource;
@@ -16,4 +17,6 @@ public interface BookingService {
     BookingSavedDTO create(Long resourceId, BookingCreateDTO bookingCreateDTO, Authentication authentication);
 
     List<BookingReadDTO> findAll(Integer page, Integer size, Boolean isConfirmed);
+
+    List<BookingProfileReadDTO> findAllForUser(Authentication authentication);
 }
