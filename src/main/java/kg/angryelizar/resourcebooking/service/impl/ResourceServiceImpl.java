@@ -6,12 +6,12 @@ import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.model.User;
 import kg.angryelizar.resourcebooking.repository.ResourceRepository;
-import kg.angryelizar.resourcebooking.repository.UserRepository;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import kg.angryelizar.resourcebooking.service.ResourceService;
 import kg.angryelizar.resourcebooking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -27,6 +27,7 @@ import java.util.Optional;
 public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository resourceRepository;
     private final UserService userService;
+
     private final BookingService bookingService;
 
     @Override
@@ -79,14 +80,6 @@ public class ResourceServiceImpl implements ResourceService {
         return HttpStatus.OK;
     }
 
-    @Override
-    public Boolean isAvailableForBookingById(Long resourceId) {
-        Optional<Resource> resource = resourceRepository.findById(resourceId);
-        if (resource.isPresent()) {
-            return resource.get().getIsActive();
-        }
-        return false;
-    }
 
     private ResourceReadDTO toResourceReadDto(Resource resource) {
             String author = String.format("%s %s", resource.getUpdatedBy().getName(),  resource.getUpdatedBy().getSurname());

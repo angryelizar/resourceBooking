@@ -17,5 +17,4 @@ public interface ResourceService {
     ResourceReadDTO update(Long resourceId, ResourceCreateEditDTO resourceDTO, Authentication authentication);
 
     HttpStatus delete(Long resourceId, Authentication authentication);
-    Boolean isAvailableForBookingById(Long resourceId);
 }

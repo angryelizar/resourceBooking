@@ -10,9 +10,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
+import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bookings")
+@Slf4j
 @Tag(name = "Управление бронированиями",
         description = "Бронирование ресурса, отмена брони и ее оплата для обычного пользователя, а также просмотр, редактирование и удаление для администратора")
 public class BookingController {
@@ -53,8 +56,8 @@ public class BookingController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не обычный юзер", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
-    public ResponseEntity<BookingReadDTO> booking(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody BookingCreateDTO bookingCreateDTO, Authentication authentication) {
-        return bookingService.create(resourceId, bookingCreateDTO, authentication);
+    public ResponseEntity<BookingSavedDTO> booking(@PathVariable @Parameter(description = "Идентификатор ресурса") Long resourceId, @Valid @RequestBody BookingCreateDTO bookingCreateDTO, Authentication authentication) {
+        return ResponseEntity.ok(bookingService.create(resourceId, bookingCreateDTO, authentication));
     }
 
 }

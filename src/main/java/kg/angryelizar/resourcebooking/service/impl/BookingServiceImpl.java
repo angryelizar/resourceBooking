@@ -1,37 +1,44 @@
 package kg.angryelizar.resourcebooking.service.impl;
 
+import jakarta.transaction.Transactional;
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
+import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.model.Booking;
 import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.model.User;
 import kg.angryelizar.resourcebooking.repository.BookingRepository;
 import kg.angryelizar.resourcebooking.repository.PaymentRepository;
+import kg.angryelizar.resourcebooking.repository.ResourceRepository;
+import kg.angryelizar.resourcebooking.repository.UserRepository;
 import kg.angryelizar.resourcebooking.service.BookingService;
-import kg.angryelizar.resourcebooking.service.ResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+    private final ResourceRepository resourceRepository;
 
     private final BookingRepository bookingRepository;
     private final PaymentRepository paymentRepository;
-    private final ResourceService resourceService;
+    private static final ZoneOffset ZONE_OFFSET = ZoneOffset.UTC;
     private static final String NAME_PATTERN = "%s %s";
+    private final UserRepository userRepository;
     @Value("${spring.application.limitDaysToBook}")
     private Long limitDaysToBook;
 
@@ -47,9 +54,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public ResponseEntity<BookingReadDTO> create(Long resourceId, BookingCreateDTO bookingCreateDTO, Authentication authentication) {
+    @Transactional
+    public BookingSavedDTO create(Long resourceId, BookingCreateDTO bookingCreateDTO, Authentication authentication) {
 
-        if (!resourceService.isAvailableForBookingById(resourceId)) {
+        if (Boolean.FALSE.equals(isAvailableForBookingById(resourceId))) {
             log.error("Ресурс {} недоступен для бронирования - сущность деактивирована или не существует", resourceId);
             throw new ResourceException(String.format("Ресурс %s недоступен для бронирования - сущность деактивирована или не существует", resourceId));
         }
@@ -59,11 +67,45 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceException(String.format("%s и %s: одинаковые даты, бронирование невозможно", bookingCreateDTO.startDate(), bookingCreateDTO.endDate()));
         }
 
-        // Проверка доступности брони по времени
-        // Расчет суммы
-        // Выставление счета
-        return null;
+        Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new ResourceException("Ресурс не найден, ID " + resourceId));
+        if (Boolean.FALSE.equals(isBookingPossible(bookingCreateDTO.startDate(), bookingCreateDTO.endDate(), resource))) {
+            throw new ResourceException("Бронирование недоступно, есть перекрытие по другой брони либо вы пытаетесь забронировать слишком заранее :)");
+        }
+
+        User author = userRepository.getByEmail(authentication.getName()).orElseThrow();
+
+
+        Booking booking = Booking.builder()
+                .startDate(bookingCreateDTO.startDate())
+                .endDate(bookingCreateDTO.endDate())
+                .isConfirmed(false)
+                .resource(resource)
+                .author(author)
+                .build();
+        booking.setUpdatedBy(author);
+        // Расчет суммы (получаем BigDecimal, который является суммой за аренду ресурса)
+        BigDecimal amount = getAmountForBooking(bookingCreateDTO, resource.getHourlyRate());
+        booking = bookingRepository.save(booking);
+        log.info("Получено новое бронирование: {} (ID {}), c {} до {}, автор - {} {}, статус подтверждения -  {}",
+                booking.getResource().getTitle(), booking.getId(), booking.getStartDate(), booking.getEndDate(),
+                booking.getAuthor().getName(), booking.getAuthor().getSurname(), booking.getIsConfirmed());
+        return new BookingSavedDTO(resource.getTitle(), booking.getId(), booking.getStartDate(), booking.getEndDate(),
+                String.format(NAME_PATTERN, booking.getAuthor().getName(), booking.getAuthor().getSurname()),
+                amount.doubleValue(), booking.getIsConfirmed());
     }
+
+    private BigDecimal getAmountForBooking(BookingCreateDTO bookingCreateDTO, BigDecimal hourlyRate) {
+        // Вычисляем количество секунд между двумя датами
+        long resultBetweenInSeconds = ChronoUnit.SECONDS.between(bookingCreateDTO.startDate(), bookingCreateDTO.endDate());
+
+        // Преобразуем секунды в часы (включая дробную часть)
+        double resultBetweenInHours = resultBetweenInSeconds / 3600.0;
+        log.info("Часов между двумя датами - {}", resultBetweenInHours);
+
+        // Вычисляем итоговую сумму на основе почасовой ставки
+        return BigDecimal.valueOf(resultBetweenInHours).multiply(hourlyRate);
+    }
+
 
     @Override
     public List<BookingReadDTO> findAll(Integer page, Integer size, Boolean isConfirmed) {
@@ -75,12 +117,11 @@ public class BookingServiceImpl implements BookingService {
         //// Переводим все 4 даты в целое количественное значение секунд, прошедших с 1 января 1970 года.
         //// Это необходимо нам, для того, чтобы по формуле (min(B, D) - max(A, C)) >= 0 понять есть ли пересечения.
         //// Если значение больше 0 - пересечение есть и бронь невозможна
-        ZoneOffset zoneOffset = ZoneOffset.UTC;
 
-        long aRes = a.toEpochSecond(zoneOffset);
-        long bRes = b.toEpochSecond(zoneOffset);
-        long cRes = c.toEpochSecond(zoneOffset);
-        long dRes = d.toEpochSecond(zoneOffset);
+        long aRes = a.toEpochSecond(ZONE_OFFSET);
+        long bRes = b.toEpochSecond(ZONE_OFFSET);
+        long cRes = c.toEpochSecond(ZONE_OFFSET);
+        long dRes = d.toEpochSecond(ZONE_OFFSET);
 
         // A: Дата начала первого диапазона дат (бронь 1).
         // B: дата окончания первого диапазона дат (бронь 1).
@@ -92,29 +133,26 @@ public class BookingServiceImpl implements BookingService {
     private Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource) {
 
         LocalDate startDate = start.toLocalDate();
-        LocalDate endDate = end.toLocalDate();
         List<Booking> bookings;
 
-        if (startDate.equals(endDate)) {
-            bookings = bookingRepository.findByIsConfirmedAndResource(true, resource, start, end);
-            return isOverlapBookings(start, end, bookings);
-        }
-        Long daysBetween = calculateDaysBetween(startDate, endDate);
-
-
         /// Если бронирование слишком заранее (например за 30, 300, 3000 дней - зависит от нашего лимита) -
-        // мы не лезем в БД и грузим ее для проверки перекрытия дат, а отклоняем бронь
-        if (daysBetween > limitDaysToBook) {
+        // мы не лезем в БД для проверки перекрытия дат и перебора всех броней, а отклоняем бронь
+        Long daysBetweenStart = calculateDaysBetween(LocalDate.now(), startDate);
+        if (daysBetweenStart > limitDaysToBook) {
+            log.error("Попытка забронировать бронь более чем за {} дней", limitDaysToBook);
             return false;
         }
 
-        bookings = bookingRepository.findByIsConfirmedAndResource(false, resource, start, end);
-        return isOverlapBookings(start, end, bookings);
+
+        bookings = bookingRepository.findByIsConfirmedAndResource(true, resource, start, end);
+        return !isOverlapBookings(start, end, bookings);
     }
 
     private Boolean isOverlapBookings(LocalDateTime start, LocalDateTime end, List<Booking> bookings) {
         for (Booking booking : bookings) {
             if (Boolean.TRUE.equals(isOverlapLocalDateTime(start, end, booking.getStartDate(), booking.getEndDate()))) {
+                log.error("Есть перекрытие по брони!");
+                log.error("Бронь с ID {} пересекается с бронью по дате {} (старт) и {} (конец)", booking.getId(), start, end);
                 return true;
             }
         }
@@ -123,6 +161,14 @@ public class BookingServiceImpl implements BookingService {
 
     private Long calculateDaysBetween(LocalDate startDate, LocalDate endDate) {
         return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    public Boolean isAvailableForBookingById(Long resourceId) {
+        Optional<Resource> resource = resourceRepository.findById(resourceId);
+        if (resource.isPresent()) {
+            return resource.get().getIsActive();
+        }
+        return false;
     }
 
     private BookingReadDTO toDTO(Booking booking) {
