@@ -18,5 +18,5 @@ public interface BookingService {
 
     List<BookingReadDTO> findAll(Integer page, Integer size, Boolean isConfirmed);
 
-    List<BookingProfileReadDTO> findAllForUser(Authentication authentication);
+    List<BookingProfileReadDTO> findAllForUser(Authentication authentication, Integer page, Integer size);
 }

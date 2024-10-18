@@ -115,9 +115,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingProfileReadDTO> findAllForUser(Authentication authentication) {
+    public List<BookingProfileReadDTO> findAllForUser(Authentication authentication, Integer page, Integer size) {
         User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
-        return bookingRepository.findByAuthor(author).stream().map(this::toProfileDTO).toList();
+        return bookingRepository.findByAuthor(author, PageRequest.of(page, size)).getContent().stream().map(this::toProfileDTO).toList();
     }
 
     private Boolean isOverlapLocalDateTime(LocalDateTime a, LocalDateTime b, LocalDateTime c, LocalDateTime d) {
