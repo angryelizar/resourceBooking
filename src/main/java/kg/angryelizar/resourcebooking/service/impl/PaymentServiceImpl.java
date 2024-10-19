@@ -3,17 +3,13 @@ package kg.angryelizar.resourcebooking.service.impl;
 import kg.angryelizar.resourcebooking.dto.PaymentBookingDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentReadDTO;
+import kg.angryelizar.resourcebooking.dto.PaymentUpdateDTO;
 import kg.angryelizar.resourcebooking.exceptions.BookingException;
 import kg.angryelizar.resourcebooking.exceptions.PaymentException;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
-import kg.angryelizar.resourcebooking.model.Booking;
-import kg.angryelizar.resourcebooking.model.Payment;
-import kg.angryelizar.resourcebooking.model.Resource;
-import kg.angryelizar.resourcebooking.model.User;
-import kg.angryelizar.resourcebooking.repository.BookingRepository;
-import kg.angryelizar.resourcebooking.repository.PaymentRepository;
-import kg.angryelizar.resourcebooking.repository.UserRepository;
+import kg.angryelizar.resourcebooking.model.*;
+import kg.angryelizar.resourcebooking.repository.*;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import kg.angryelizar.resourcebooking.service.PaymentService;
 import kg.angryelizar.resourcebooking.strategy.PaymentStrategy;
@@ -37,11 +33,12 @@ public class PaymentServiceImpl implements PaymentService {
     private final Map<String, PaymentStrategy> paymentStrategies;
     private static final String NAME_PATTERN = "%s %s";
     private final BookingRepository bookingRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
+    private final PaymentStatusRepository paymentStatusRepository;
 
     public Payment executePayment(Long bookingId, String method, BigDecimal amount, String credentials) {
 
         PaymentStrategy paymentStrategy = paymentStrategies.get(method.toLowerCase());
-        log.info("Payment strategy: {}", paymentStrategy);
         if (paymentStrategy != null) {
             return paymentStrategy.pay(bookingId, method.toLowerCase(), credentials, amount);
         }
@@ -81,13 +78,13 @@ public class PaymentServiceImpl implements PaymentService {
             throw new PaymentException("Нельзя оплатить чужое бронирование!");
         }
 
-        if (Boolean.TRUE.equals(booking.getIsConfirmed())){
+        if (Boolean.TRUE.equals(booking.getIsConfirmed())) {
             throw new PaymentException("Бронь уже подтверждена (оплачена)");
         }
 
         Resource resource = booking.getResource();
 
-        if (Boolean.FALSE.equals(bookingService.isBookingPossible(booking.getStartDate(), booking.getEndDate(), resource))){
+        if (Boolean.FALSE.equals(bookingService.isBookingPossible(booking.getStartDate(), booking.getEndDate(), resource))) {
             log.error(booking.toString());
             bookingRepository.deleteById(booking.getId());
             log.error("Удалена неоплаченная бронь с ID {} - внесен платеж на другую бронь, пересекающуюся по времени", bookingId);
@@ -101,6 +98,30 @@ public class PaymentServiceImpl implements PaymentService {
         booking.setIsConfirmed(true);
         bookingRepository.save(booking);
         return toDTO(finalPayment);
+    }
+
+    @Override
+    public PaymentReadDTO edit(Long paymentId, PaymentUpdateDTO paymentUpdateDTO, Authentication authentication) {
+        User user = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
+
+        Payment paymentForEdit = paymentRepository.findById(paymentId).orElseThrow(
+                () -> new PaymentException("Платеж не найден!"));
+
+        PaymentMethod paymentMethod = paymentMethodRepository.findByCode(paymentUpdateDTO.methodCode()).orElseThrow(
+                () -> new PaymentException("Метод оплаты не найден!"));
+
+        PaymentStatus paymentStatus = paymentStatusRepository.findByStatus(paymentUpdateDTO.status()).orElseThrow(
+                () -> new PaymentException("Статус платежа не найден!"));
+
+        paymentForEdit.setAmount(BigDecimal.valueOf(paymentUpdateDTO.amount()));
+        paymentForEdit.setPaymentStatus(paymentStatus);
+        paymentForEdit.setPaymentMethod(paymentMethod);
+        paymentForEdit.setCredentials(paymentUpdateDTO.credentials());
+        paymentForEdit.setUpdatedBy(user);
+
+        paymentForEdit = paymentRepository.saveAndFlush(paymentForEdit);
+        log.warn("Внесены обновления по платежу {} пользователем {}", paymentId, user.getEmail());
+        return toDTO(paymentForEdit);
     }
 
     private PaymentProfileReadDTO toProfileDTO(Payment payment) {

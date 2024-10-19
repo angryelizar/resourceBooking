@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import kg.angryelizar.resourcebooking.dto.PaymentBookingDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentMethodReadDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentReadDTO;
+import kg.angryelizar.resourcebooking.dto.PaymentUpdateDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.PaymentMethodService;
 import kg.angryelizar.resourcebooking.service.PaymentService;
@@ -47,6 +48,28 @@ public class PaymentsController {
     ) {
         return ResponseEntity.ok(paymentService.findAll(page, size));
     }
+
+    @PutMapping("/{paymentId}")
+    @Operation(summary = "Изменение информации о платеже (администратор)", tags = "Payment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно",
+                    content = @Content(schema = @Schema(implementation = PaymentMethodReadDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "409", description = "Ошибка валидации",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто это должен делать",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<PaymentReadDTO> editPayment(
+            @PathVariable @Parameter(description = "Идентификатор платежа") Long paymentId,
+            @Valid @RequestBody PaymentUpdateDTO paymentUpdateDTO,
+            Authentication authentication){
+        return ResponseEntity.ok(paymentService.edit(paymentId, paymentUpdateDTO, authentication));
+    }
+
 
     @PostMapping("/bookings/{bookingId}")
     @Operation(summary = "Проведение оплаты за осуществленную бронь", tags = "Payment")

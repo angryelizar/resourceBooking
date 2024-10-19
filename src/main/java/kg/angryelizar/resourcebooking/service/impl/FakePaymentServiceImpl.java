@@ -37,7 +37,8 @@ public class FakePaymentServiceImpl {
             throw new PaymentException("Оплата невозможна - сумма не может быть меньше или равна нулю!");
         }
         Payment payment = Payment.builder()
-                .paymentStatus(paymentStatusRepository.findByStatus(PaymentStatus.CONFIRMED.getValue()))
+                .paymentStatus(paymentStatusRepository.findByStatus(PaymentStatus.CONFIRMED.getValue()).orElseThrow(
+                        () -> new PaymentException("Статус платежа не найден!")))
                 .booking(booking.get())
                 .paymentMethod(paymentMethod.get())
                 .amount(amount)
