@@ -16,6 +16,7 @@ import kg.angryelizar.resourcebooking.strategy.PaymentStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -122,6 +123,14 @@ public class PaymentServiceImpl implements PaymentService {
         paymentForEdit = paymentRepository.saveAndFlush(paymentForEdit);
         log.warn("Внесены обновления по платежу {} пользователем {}", paymentId, user.getEmail());
         return toDTO(paymentForEdit);
+    }
+
+    @Override
+    public HttpStatus delete(Long paymentId) {
+        Payment paymentForDelete = paymentRepository.findById(paymentId).orElseThrow(
+                () -> new PaymentException("Платеж не найден!"));
+        paymentRepository.delete(paymentForDelete);
+        return HttpStatus.OK;
     }
 
     private PaymentProfileReadDTO toProfileDTO(Payment payment) {

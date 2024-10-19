@@ -5,6 +5,7 @@ import kg.angryelizar.resourcebooking.dto.PaymentProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentReadDTO;
 import kg.angryelizar.resourcebooking.dto.PaymentUpdateDTO;
 import kg.angryelizar.resourcebooking.model.Payment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,6 @@ public interface PaymentService {
     PaymentReadDTO makePayment(Long bookingId, PaymentBookingDTO payment, Authentication authentication);
 
     PaymentReadDTO edit(Long paymentId, PaymentUpdateDTO paymentUpdateDTO, Authentication authentication);
+
+    HttpStatus delete(Long paymentId);
 }

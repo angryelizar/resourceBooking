@@ -16,6 +16,7 @@ import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.PaymentMethodService;
 import kg.angryelizar.resourcebooking.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,24 @@ public class PaymentsController {
             @Valid @RequestBody PaymentUpdateDTO paymentUpdateDTO,
             Authentication authentication){
         return ResponseEntity.ok(paymentService.edit(paymentId, paymentUpdateDTO, authentication));
+    }
+
+    @DeleteMapping("/{paymentId}")
+    @Operation(summary = "Удаление платежа (администратор)", tags = "Payment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - платеж удален",
+                    content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не администратор",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<HttpStatus> deletePayment(
+            @PathVariable @Parameter(description = "Идентификатор ресурса") Long paymentId
+    ) {
+        return ResponseEntity.ok(paymentService.delete(paymentId));
     }
 
 
