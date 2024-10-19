@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/payments/**").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.DELETE, "/payments/**").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
+                        .requestMatchers(HttpMethod.PUT, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
                         .anyRequest().permitAll());
         return http.build();
     }

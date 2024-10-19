@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
+import kg.angryelizar.resourcebooking.dto.BookingUpdateDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,28 @@ public class BookingController {
             @Parameter(description = "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)")
             @RequestParam(defaultValue = "true") Boolean isConfirmed) {
         return ResponseEntity.ok(bookingService.findAll(page, size, isConfirmed));
+    }
+
+    @PutMapping("/{bookingId}")
+    @Operation(summary = "Редактирование бронирования администраторами", tags = "Booking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - бронирование отредактировано",
+                    content = @Content(schema = @Schema(implementation = BookingReadDTO.class))),
+            @ApiResponse(responseCode = "409", description = "Произошла ошибка валидации",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не обычный юзер",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+    })
+    public ResponseEntity<BookingReadDTO> editBooking(
+            @PathVariable @Parameter(description = "Идентификатор бронирования") Long bookingId,
+            @RequestBody @Valid BookingUpdateDTO bookingUpdateDTO,
+            Authentication authentication
+    ){
+        return ResponseEntity.ok(bookingService.edit(bookingUpdateDTO, authentication, bookingId));
     }
 
     @DeleteMapping("/{bookingId}")

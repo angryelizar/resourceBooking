@@ -1,9 +1,6 @@
 package kg.angryelizar.resourcebooking.service;
 
-import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
-import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
-import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
-import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
+import kg.angryelizar.resourcebooking.dto.*;
 import kg.angryelizar.resourcebooking.model.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -29,4 +26,6 @@ public interface BookingService {
     Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource);
 
     HttpStatus delete(Long bookingId, Authentication authentication);
+
+    BookingReadDTO edit(BookingUpdateDTO bookingUpdateDTO, Authentication authentication, Long bookingId);
 }

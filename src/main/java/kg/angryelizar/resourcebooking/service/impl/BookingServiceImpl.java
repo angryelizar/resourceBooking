@@ -1,10 +1,7 @@
 package kg.angryelizar.resourcebooking.service.impl;
 
 import jakarta.transaction.Transactional;
-import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
-import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
-import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
-import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
+import kg.angryelizar.resourcebooking.dto.*;
 import kg.angryelizar.resourcebooking.enums.Authority;
 import kg.angryelizar.resourcebooking.exceptions.BookingException;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
@@ -47,6 +44,7 @@ public class BookingServiceImpl implements BookingService {
     @Value("${spring.application.limitDaysToBook}")
     private Long limitDaysToBook;
     private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден!";
+    private static final String BOOKING_NOT_FOUND_MESSAGE = "Бронирование не найдено!";
 
     @Override
     public void deleteBookingsByResource(Resource resource) {
@@ -156,8 +154,6 @@ public class BookingServiceImpl implements BookingService {
             log.error("Попытка забронировать бронь более чем за {} дней", limitDaysToBook);
             return false;
         }
-
-
         bookings = bookingRepository.findByIsConfirmedAndResource(true, resource, start, end);
         return !isOverlapBookings(start, end, bookings);
     }
@@ -165,13 +161,40 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public HttpStatus delete(Long bookingId, Authentication authentication) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(
-                () -> new BookingException("Бронирование не найдено!"));
+                () -> new BookingException(BOOKING_NOT_FOUND_MESSAGE));
         User user = userRepository.getByEmail(authentication.getName()).orElseThrow(
                 () -> new UserException(USER_NOT_FOUND_MESSAGE));
         if (user.getAuthority().getAuthority().equals(Authority.USER.getName())) {
             return deleteBookingByUser(booking, user);
         }
         return deleteBookingByAdministrator(booking);
+    }
+
+    @Override
+    public BookingReadDTO edit(BookingUpdateDTO bookingUpdateDTO, Authentication authentication, Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(
+                () -> new BookingException(BOOKING_NOT_FOUND_MESSAGE));
+        User user = userRepository.getByEmail(authentication.getName()).orElseThrow(
+                () -> new UserException(USER_NOT_FOUND_MESSAGE));
+
+        List<Booking> bookingsForCheck = bookingRepository.findByIsConfirmedAndResource(
+                true, booking.getResource(), bookingUpdateDTO.startDate(), bookingUpdateDTO.endDate());
+
+        /// При проверке на возможность даты бронирования убираем из списка на сравнение нашу же бронь
+        bookingsForCheck.removeIf(e -> e.getId().equals(bookingId));
+
+        if (Boolean.TRUE.equals(isOverlapBookings(bookingUpdateDTO.startDate(), bookingUpdateDTO.endDate(), bookingsForCheck))) {
+            throw new ResourceException(
+                    "Бронирование недоступно, есть перекрытие по другой брони, " +
+                            "либо вы пытаетесь забронировать слишком заранее :)");
+        }
+
+        booking.setUpdatedBy(user);
+        booking.setIsConfirmed(bookingUpdateDTO.isConfirmed());
+        booking.setStartDate(bookingUpdateDTO.startDate());
+        booking.setEndDate(bookingUpdateDTO.endDate());
+
+        return toDTO(bookingRepository.saveAndFlush(booking));
     }
 
     private HttpStatus deleteBookingByAdministrator(Booking booking) {
