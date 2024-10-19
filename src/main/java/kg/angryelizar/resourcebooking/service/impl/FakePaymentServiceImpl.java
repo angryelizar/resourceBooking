@@ -36,13 +36,14 @@ public class FakePaymentServiceImpl {
             log.error("Оплата невозможна - сумма не может быть меньше или равна нулю!");
             throw new PaymentException("Оплата невозможна - сумма не может быть меньше или равна нулю!");
         }
-        return paymentRepository.save(Payment.paymentBuilder()
+        Payment payment = Payment.builder()
                 .paymentStatus(paymentStatusRepository.findByStatus(PaymentStatus.CONFIRMED.getValue()))
                 .booking(booking.get())
                 .paymentMethod(paymentMethod.get())
                 .amount(amount)
                 .credentials(credentials)
-                .updatedBy(booking.get().getAuthor())
-                .build());
+                .build();
+        payment.setUpdatedBy(booking.get().getAuthor());
+        return paymentRepository.save(payment);
     }
 }

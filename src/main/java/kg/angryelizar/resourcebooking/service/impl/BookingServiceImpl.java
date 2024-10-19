@@ -59,7 +59,7 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public BookingSavedDTO create(Long resourceId, BookingCreateDTO bookingCreateDTO, Authentication authentication) {
 
-        if (Boolean.FALSE.equals(isAvailableForBookingById(resourceId))) {
+        if (Boolean.FALSE.equals(isAvailableForBooking(resourceId))) {
             log.error("Ресурс {} недоступен для бронирования - сущность деактивирована или не существует", resourceId);
             throw new ResourceException(String.format("Ресурс %s недоступен для бронирования - сущность деактивирована или не существует", resourceId));
         }
@@ -86,7 +86,7 @@ public class BookingServiceImpl implements BookingService {
                 .build();
         booking.setUpdatedBy(author);
         // Расчет суммы (получаем BigDecimal, который является суммой за аренду ресурса)
-        BigDecimal amount = getAmountForBooking(bookingCreateDTO, resource.getHourlyRate());
+        BigDecimal amount = getAmountForBooking(bookingCreateDTO.startDate(), bookingCreateDTO.endDate(), resource.getHourlyRate());
         booking = bookingRepository.save(booking);
         log.info("Получено новое бронирование: {} (ID {}), c {} до {}, автор - {} {}, статус подтверждения -  {}",
                 booking.getResource().getTitle(), booking.getId(), booking.getStartDate(), booking.getEndDate(),
@@ -96,9 +96,10 @@ public class BookingServiceImpl implements BookingService {
                 amount.doubleValue(), booking.getIsConfirmed());
     }
 
-    private BigDecimal getAmountForBooking(BookingCreateDTO bookingCreateDTO, BigDecimal hourlyRate) {
+    @Override
+    public BigDecimal getAmountForBooking(LocalDateTime startDate, LocalDateTime endDate, BigDecimal hourlyRate) {
         // Вычисляем количество секунд между двумя датами
-        long resultBetweenInSeconds = ChronoUnit.SECONDS.between(bookingCreateDTO.startDate(), bookingCreateDTO.endDate());
+        long resultBetweenInSeconds = ChronoUnit.SECONDS.between(startDate, endDate);
 
         // Преобразуем секунды в часы (включая дробную часть)
         double resultBetweenInHours = resultBetweenInSeconds / 3600.0;
@@ -138,7 +139,8 @@ public class BookingServiceImpl implements BookingService {
         return (Math.min(bRes, dRes) - Math.max(aRes, cRes)) > 0;
     }
 
-    private Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource) {
+    @Override
+    public Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource) {
 
         LocalDate startDate = start.toLocalDate();
         List<Booking> bookings;
@@ -171,7 +173,8 @@ public class BookingServiceImpl implements BookingService {
         return java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate);
     }
 
-    public Boolean isAvailableForBookingById(Long resourceId) {
+    @Override
+    public Boolean isAvailableForBooking(Long resourceId) {
         Optional<Resource> resource = resourceRepository.findById(resourceId);
         if (resource.isPresent()) {
             return resource.get().getIsActive();

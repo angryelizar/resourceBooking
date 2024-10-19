@@ -25,10 +25,14 @@ public class UserController {
 
     @Operation(summary = "Регистрация пользователя (доступно только для анонимных пользователей)", tags = "User")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Пользователь успешно зарегистрирован", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "400", description = "Такой пользователь уже зарегистрирован или BAD REQUEST", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "409", description = "Ошибка валидации", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+            @ApiResponse(responseCode = "201", description = "Пользователь успешно зарегистрирован",
+                    content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "Такой пользователь уже зарегистрирован или BAD REQUEST",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "409", description = "Ошибка валидации",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     @PostMapping("/registration")
     public ResponseEntity<HttpStatus> registration(@RequestBody @Valid UserDTO userDTO) {

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
-@Schema(description = "DTO для просмотра информации о платеже (администратор)")
+@Schema(description = "DTO для просмотра информации о платеже")
 public record PaymentReadDTO(
         @Schema(description = "Название ресурса", example = "Hyatt Regency Bishkek")
         String resourceName,

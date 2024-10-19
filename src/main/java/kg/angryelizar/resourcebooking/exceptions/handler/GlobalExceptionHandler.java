@@ -1,9 +1,6 @@
 package kg.angryelizar.resourcebooking.exceptions.handler;
 
-import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
-import kg.angryelizar.resourcebooking.exceptions.PaymentException;
-import kg.angryelizar.resourcebooking.exceptions.ResourceException;
-import kg.angryelizar.resourcebooking.exceptions.UserException;
+import kg.angryelizar.resourcebooking.exceptions.*;
 import kg.angryelizar.resourcebooking.service.impl.ErrorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +41,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceException.class)
     public ResponseEntity<ErrorResponseBody> resourceException(ResourceException exception) {
+        log.error(exception.getMessage());
+        return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookingException.class)
+    public ResponseEntity<ErrorResponseBody> bookingException(BookingException exception) {
         log.error(exception.getMessage());
         return new ResponseEntity<>(errorService.makeResponse(exception), HttpStatus.BAD_REQUEST);
     }

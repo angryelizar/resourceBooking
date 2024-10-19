@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-@Builder(builderMethodName = "paymentBuilder")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "payments")
@@ -24,13 +24,5 @@ public class Payment extends BaseEntityAudit {
     private PaymentStatus paymentStatus;
     private String credentials;
     private BigDecimal amount;
-
-    public static class PaymentBuilder {
-        private User updatedBy;
-        public PaymentBuilder updatedBy(User updatedBy) {
-            this.updatedBy = updatedBy;
-            return this;
-        }
-    }
 
 }

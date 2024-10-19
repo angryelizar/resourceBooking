@@ -31,12 +31,17 @@ public class ProfileController {
     private final PaymentService paymentService;
 
     @GetMapping("/bookings")
-    @Operation(summary = "Просмотр всех бронирований (подтвержденных и неподтвержденных), пагинация", tags = "Profile")
+    @Operation(summary = "Просмотр всех бронирований (подтвержденных и неподтвержденных), пагинация",
+            tags = "Profile")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = BookingProfileReadDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто нужен", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно",
+                    content = @Content(schema = @Schema(implementation = BookingProfileReadDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто нужен",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<List<BookingProfileReadDTO>> bookingsProfile(
             Authentication authentication,
@@ -48,10 +53,14 @@ public class ProfileController {
     @GetMapping("/payments")
     @Operation(summary = "Просмотр всех платежей, пагинация", tags = "Profile")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно", content = @Content(schema = @Schema(implementation = PaymentProfileReadDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто нужен", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно",
+                    content = @Content(schema = @Schema(implementation = PaymentProfileReadDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен - скорее всего вы не тот, кто нужен",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))
     })
     public ResponseEntity<List<PaymentProfileReadDTO>> paymentsProfile(
             Authentication authentication,

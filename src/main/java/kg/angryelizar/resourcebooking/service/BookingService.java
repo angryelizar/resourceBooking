@@ -8,6 +8,8 @@ import kg.angryelizar.resourcebooking.model.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,7 +18,12 @@ public interface BookingService {
 
     BookingSavedDTO create(Long resourceId, BookingCreateDTO bookingCreateDTO, Authentication authentication);
 
+    BigDecimal getAmountForBooking(LocalDateTime startDate, LocalDateTime endDate, BigDecimal hourlyRate);
+
     List<BookingReadDTO> findAll(Integer page, Integer size, Boolean isConfirmed);
 
     List<BookingProfileReadDTO> findAllForUser(Authentication authentication, Integer page, Integer size);
+
+    Boolean isAvailableForBooking(Long resourceId);
+    Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource);
 }
