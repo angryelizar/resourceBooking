@@ -5,6 +5,8 @@ import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
+import kg.angryelizar.resourcebooking.enums.Authority;
+import kg.angryelizar.resourcebooking.exceptions.BookingException;
 import kg.angryelizar.resourcebooking.exceptions.ResourceException;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
 import kg.angryelizar.resourcebooking.model.Booking;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     @Value("${spring.application.limitDaysToBook}")
     private Long limitDaysToBook;
+    private static final String USER_NOT_FOUND_MESSAGE = "Пользователь не найден!";
 
     @Override
     public void deleteBookingsByResource(Resource resource) {
@@ -74,7 +78,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceException("Бронирование недоступно, есть перекрытие по другой брони либо вы пытаетесь забронировать слишком заранее :)");
         }
 
-        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
+        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException(USER_NOT_FOUND_MESSAGE));
 
 
         Booking booking = Booking.builder()
@@ -117,7 +121,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingProfileReadDTO> findAllForUser(Authentication authentication, Integer page, Integer size) {
-        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException("Пользователь не найден!"));
+        User author = userRepository.getByEmail(authentication.getName()).orElseThrow(() -> new UserException(USER_NOT_FOUND_MESSAGE));
         return bookingRepository.findByAuthor(author, PageRequest.of(page, size)).getContent().stream().map(this::toProfileDTO).toList();
     }
 
@@ -156,6 +160,43 @@ public class BookingServiceImpl implements BookingService {
 
         bookings = bookingRepository.findByIsConfirmedAndResource(true, resource, start, end);
         return !isOverlapBookings(start, end, bookings);
+    }
+
+    @Override
+    public HttpStatus delete(Long bookingId, Authentication authentication) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(
+                () -> new BookingException("Бронирование не найдено!"));
+        User user = userRepository.getByEmail(authentication.getName()).orElseThrow(
+                () -> new UserException(USER_NOT_FOUND_MESSAGE));
+        if (user.getAuthority().getAuthority().equals(Authority.USER.getName())) {
+            return deleteBookingByUser(booking, user);
+        }
+        return deleteBookingByAdministrator(booking);
+    }
+
+    private HttpStatus deleteBookingByAdministrator(Booking booking) {
+        if (Boolean.FALSE.equals(isDeletable(booking))) {
+            throw new BookingException("Удаление бронирования невозможно - оно уже оплачено!");
+        }
+        bookingRepository.delete(booking);
+        return HttpStatus.OK;
+    }
+
+    private HttpStatus deleteBookingByUser(Booking booking, User user) {
+        if (!user.getEmail().equals(booking.getAuthor().getEmail())) {
+            log.error("Попытка удалить чужую бронь с ID {} пользователем {}", booking.getId(), user.getEmail());
+            throw new BookingException("Это не ваше бронирование!");
+        }
+        if (Boolean.FALSE.equals(isDeletable(booking))) {
+            log.error("Удаление бронирования с ID {} невозможно по причине наличия связанного с бронью платежа", booking.getId());
+            throw new BookingException("Удаление бронирования невозможно - оно уже оплачено!");
+        }
+        bookingRepository.delete(booking);
+        return HttpStatus.OK;
+    }
+
+    private Boolean isDeletable(Booking booking) {
+        return paymentRepository.findAllByBooking(booking).isEmpty();
     }
 
     private Boolean isOverlapBookings(LocalDateTime start, LocalDateTime end, List<Booking> bookings) {

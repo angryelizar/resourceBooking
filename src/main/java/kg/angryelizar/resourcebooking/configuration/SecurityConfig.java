@@ -37,10 +37,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/resources").permitAll()
                         .requestMatchers(HttpMethod.GET, "/resources/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/payments/methods").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").authenticated()
                         // Те пути, которые доступны только обычным пользователям (роль USER)
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.USER.getName())
+                        .requestMatchers(HttpMethod.POST, "payments/bookings/**").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.GET, "/profile/bookings").hasAuthority(Authority.USER.getName())
                         .requestMatchers(HttpMethod.GET, "/profile/payments").hasAuthority(Authority.USER.getName())
                         // Те пути, которые доступны только администраторам (роль ADMIN)
@@ -52,7 +54,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/payments/**").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.DELETE, "/payments/**").hasAuthority(Authority.ADMIN.getName())
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
-                        .requestMatchers(HttpMethod.DELETE, "/bookings/**").hasAuthority(Authority.ADMIN.getName())
                         .anyRequest().permitAll());
         return http.build();
     }

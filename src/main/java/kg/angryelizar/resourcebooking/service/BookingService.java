@@ -5,6 +5,7 @@ import kg.angryelizar.resourcebooking.dto.BookingProfileReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingReadDTO;
 import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.model.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +27,6 @@ public interface BookingService {
 
     Boolean isAvailableForBooking(Long resourceId);
     Boolean isBookingPossible(LocalDateTime start, LocalDateTime end, Resource resource);
+
+    HttpStatus delete(Long bookingId, Authentication authentication);
 }

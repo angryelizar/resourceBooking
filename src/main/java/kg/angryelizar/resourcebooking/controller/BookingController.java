@@ -14,6 +14,7 @@ import kg.angryelizar.resourcebooking.dto.BookingSavedDTO;
 import kg.angryelizar.resourcebooking.exceptions.ErrorResponseBody;
 import kg.angryelizar.resourcebooking.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,23 @@ public class BookingController {
             @Parameter(description = "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)")
             @RequestParam(defaultValue = "true") Boolean isConfirmed) {
         return ResponseEntity.ok(bookingService.findAll(page, size, isConfirmed));
+    }
+
+    @DeleteMapping("/{bookingId}")
+    @Operation(summary = "Удаление бронирования для администраторов и пользователей. Пользователи могут удалить только свои брони, а администраторы - любые",
+            tags = "Booking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Запрос прошел успешно - бронирование удалено",
+                    content = @Content(schema = @Schema(implementation = HttpStatus.class))),
+            @ApiResponse(responseCode = "400", description = "Произошла ошибка при выполнении запроса",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class))),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseBody.class)))})
+    public ResponseEntity<HttpStatus> delete(
+            @PathVariable @Parameter(description = "Идентификатор бронирования") Long bookingId,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(bookingService.delete(bookingId, authentication));
     }
 
     @PostMapping("/resources/{resourceId}")
