@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Schema(description = "DTO для просмотра информации о бронировании")
-public record BookingReadDTO(
+public record BookingReadDTO (
         @Schema(description = "Название ресурса, на который назначена бронь", example = "Hyatt Regency Bishkek")
         String resourceName,
         @Schema(description = "Идентификатор ресурса, на который назначена бронь", example = "1")

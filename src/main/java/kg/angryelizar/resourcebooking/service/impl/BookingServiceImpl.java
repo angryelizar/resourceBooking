@@ -205,7 +205,7 @@ public class BookingServiceImpl implements BookingService {
         return HttpStatus.OK;
     }
 
-    private HttpStatus deleteBookingByUser(Booking booking, User user) {
+    public HttpStatus deleteBookingByUser(Booking booking, User user) {
         if (!user.getEmail().equals(booking.getAuthor().getEmail())) {
             log.error("Попытка удалить чужую бронь с ID {} пользователем {}", booking.getId(), user.getEmail());
             throw new BookingException("Это не ваше бронирование!");
