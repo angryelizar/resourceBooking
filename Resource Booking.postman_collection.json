@@ -1,0 +1,3778 @@
+{
+	"info": {
+		"_postman_id": "8c0e4694-db55-49a7-b3e6-bff1c5886134",
+		"name": "Resource Booking",
+		"description": "Этот API предоставляет возможность управлять бронированием ресурсов. Включает возможности для создания, редактирования и удаления бронирований, а также интеграцию с платежными системами для обработки оплаты.\n\nContact Support:\n Name: Elizar Konovalov\n Email: conovalov.elizar@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32949284"
+	},
+	"item": [
+		{
+			"name": "resources",
+			"item": [
+				{
+					"name": "{resourceId}",
+					"item": [
+						{
+							"name": "Редактирование ресурса (доступно только администраторам)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/resources/:resourceId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources",
+										":resourceId"
+									],
+									"variable": [
+										{
+											"key": "resourceId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор ресурса"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно - ресурс отредактирован",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8089/resources/:resourceId",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8089",
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"id\": \"<long>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"hourlyRate\": \"<double>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"updatedByName\": \"<string>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не администратор",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Произошла ошибка валидации",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Удаление ресурса (доступно только администраторам)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/resources/:resourceId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources",
+										":resourceId"
+									],
+									"variable": [
+										{
+											"key": "resourceId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор ресурса"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно - ресурс удален",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:8089/resources/:resourceId",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8089",
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "<string>"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не администратор",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Просмотр всех ресурсов с фильтрацией по активным и неактивным, а также поддержкой пагинации",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/resources?page=0&size=5&isActive=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"resources"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Номер страницы (начинается от 0)"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Размер страницы (по умолчанию - 5)"
+								},
+								{
+									"key": "isActive",
+									"value": "true",
+									"description": "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Запрос прошел успешно",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8089/resources?page=0&size=5&isActive=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8089",
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isActive",
+											"value": "true",
+											"description": "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"hourlyRate\": \"<double>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"updatedByName\": \"<string>\"\n}"
+						},
+						{
+							"name": "Произошла ошибка при выполнении запроса",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/resources?page=0&size=5&isActive=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isActive",
+											"value": "true",
+											"description": "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Внутренняя ошибка сервера",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/resources?page=0&size=5&isActive=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isActive",
+											"value": "true",
+											"description": "Показать активные или неактивные ресурсы (по умолчанию показывает активные, isActive = true)"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Создание нового ресурса (доступно только администраторам)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/resources",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"resources"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Запрос прошел успешно - ресурс создан",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8089/resources",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8089",
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<long>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"hourlyRate\": \"<double>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"updatedByName\": \"<string>\"\n}"
+						},
+						{
+							"name": "Произошла ошибка при выполнении запроса",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/resources",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Доступ запрещен - скорее всего вы не администратор",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/resources",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Произошла ошибка валидации",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/resources",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Внутренняя ошибка сервера",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"hourlyRate\": \"<double>\",\n  \"isActive\": \"<boolean>\",\n  \"title\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/resources",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"resources"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "{paymentId}",
+					"item": [
+						{
+							"name": "Изменение информации о платеже (администратор)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/payments/:paymentId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments",
+										":paymentId"
+									],
+									"variable": [
+										{
+											"key": "paymentId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор платежа"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8089/payments/:paymentId",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8089",
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"credentialsExample\": \"<string>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не тот, кто это должен делать",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Ошибка валидации",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"amount\": \"<double>\",\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Удаление платежа (администратор)",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments/:paymentId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments",
+										":paymentId"
+									],
+									"variable": [
+										{
+											"key": "paymentId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор ресурса"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно - платеж удален",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "http://localhost:8089/payments/:paymentId",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8089",
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "<string>"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не администратор",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/:paymentId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												":paymentId"
+											],
+											"variable": [
+												{
+													"key": "paymentId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "bookings",
+					"item": [
+						{
+							"name": "{bookingId}",
+							"item": [
+								{
+									"name": "Проведение оплаты за осуществленную бронь",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/payments/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId",
+													"value": "<long>",
+													"description": "(Required) Идентификатор бронирования"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Запрос прошел успешно",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://localhost:8089/payments/bookings/:bookingId",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8089",
+													"path": [
+														"payments",
+														"bookings",
+														":bookingId"
+													],
+													"variable": [
+														{
+															"key": "bookingId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"<string>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"credentialsExample\": \"<string>\"\n}"
+										},
+										{
+											"name": "Произошла ошибка при выполнении запроса",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/payments/bookings/:bookingId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"payments",
+														"bookings",
+														":bookingId"
+													],
+													"variable": [
+														{
+															"key": "bookingId"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"name": "Доступ запрещен - скорее всего вы не тот, кто это должен делать",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/payments/bookings/:bookingId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"payments",
+														"bookings",
+														":bookingId"
+													],
+													"variable": [
+														{
+															"key": "bookingId"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"name": "Внутренняя ошибка сервера",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"credentials\": \"<string>\",\n  \"methodCode\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/payments/bookings/:bookingId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"payments",
+														"bookings",
+														":bookingId"
+													],
+													"variable": [
+														{
+															"key": "bookingId"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "methods",
+					"item": [
+						{
+							"name": "Просмотр всех возможных методов оплаты",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments/methods",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments",
+										"methods"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/methods",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"methods"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"credentialsExample\": \"<string>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/methods",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"methods"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/payments/methods",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"payments",
+												"methods"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Просмотр всех платежей в системе",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/payments?page=0&size=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Номер страницы (начинается от 0)"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Размер страницы (по умолчанию - 5)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Запрос прошел успешно",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"resourceName\": \"<string>\",\n  \"paymentMethodCode\": \"<string>\",\n  \"status\": \"<string>\",\n  \"resourceId\": \"<long>\",\n  \"bookingId\": \"<long>\",\n  \"paymentId\": \"<long>\",\n  \"credentials\": \"<string>\",\n  \"amount\": \"<double>\",\n  \"updatedByName\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+						},
+						{
+							"name": "Произошла ошибка при выполнении запроса",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Доступ запрещен - скорее всего вы не администратор",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Внутренняя ошибка сервера",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/payments?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "bookings",
+			"item": [
+				{
+					"name": "{bookingId}",
+					"item": [
+						{
+							"name": "Редактирование бронирования администраторами",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/bookings/:bookingId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										":bookingId"
+									],
+									"variable": [
+										{
+											"key": "bookingId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор бронирования"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно - бронирование отредактировано",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"resourceName\": \"<string>\",\n  \"resourceId\": \"<long>\",\n  \"bookingId\": \"<long>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"author\": \"<string>\",\n  \"updatedByName\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не обычный юзер",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Произошла ошибка валидации",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Удаление бронирования для администраторов и пользователей. Пользователи могут удалить только свои брони, а администраторы - любые",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings/:bookingId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings",
+										":bookingId"
+									],
+									"variable": [
+										{
+											"key": "bookingId",
+											"value": "<long>",
+											"description": "(Required) Идентификатор бронирования"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно - бронирование удалено",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "414 REQUEST_URI_TOO_LONG"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/bookings/:bookingId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												":bookingId"
+											],
+											"variable": [
+												{
+													"key": "bookingId"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "resources",
+					"item": [
+						{
+							"name": "{resourceId}",
+							"item": [
+								{
+									"name": "Бронирование ресурса (доступно только обычному пользователю). После успешной брони в ответе выдается ID бронирования, который будет необходим для проведения оплаты",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"bookings",
+												"resources",
+												":resourceId"
+											],
+											"variable": [
+												{
+													"key": "resourceId",
+													"value": "<long>",
+													"description": "(Required) Идентификатор ресурса"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Запрос прошел успешно - бронирование создано",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"bookings",
+														"resources",
+														":resourceId"
+													],
+													"variable": [
+														{
+															"key": "resourceId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"resourceName\": \"<string>\",\n  \"bookingId\": \"<long>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<dateTime>\",\n  \"author\": \"<string>\",\n  \"amountForPay\": \"<double>\",\n  \"isConfirmed\": \"<boolean>\"\n}"
+										},
+										{
+											"name": "Произошла ошибка при выполнении запроса",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"bookings",
+														"resources",
+														":resourceId"
+													],
+													"variable": [
+														{
+															"key": "resourceId"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"name": "Доступ запрещен - скорее всего вы не обычный юзер",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"bookings",
+														"resources",
+														":resourceId"
+													],
+													"variable": [
+														{
+															"key": "resourceId"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"name": "Произошла ошибка валидации",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"bookings",
+														"resources",
+														":resourceId"
+													],
+													"variable": [
+														{
+															"key": "resourceId"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"name": "Внутренняя ошибка сервера",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"endDate\": \"<dateTime>\",\n  \"startDate\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/bookings/resources/:resourceId",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"bookings",
+														"resources",
+														":resourceId"
+													],
+													"variable": [
+														{
+															"key": "resourceId"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Просмотр всех бронирований с фильтрацией по подтвержденным и неподтвержденным, а также поддержкой пагинации. Доступно только администраторам!",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings?page=0&size=5&isConfirmed=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Номер страницы (начинается от 0)"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Размер страницы (по умолчанию - 5)"
+								},
+								{
+									"key": "isConfirmed",
+									"value": "true",
+									"description": "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Запрос прошел успешно",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?page=0&size=5&isConfirmed=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isConfirmed",
+											"value": "true",
+											"description": "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"resourceName\": \"<string>\",\n  \"resourceId\": \"<long>\",\n  \"bookingId\": \"<long>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"author\": \"<string>\",\n  \"updatedByName\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+						},
+						{
+							"name": "Произошла ошибка при выполнении запроса",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?page=0&size=5&isConfirmed=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isConfirmed",
+											"value": "true",
+											"description": "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Доступ запрещен - скорее всего вы не администратор",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?page=0&size=5&isConfirmed=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isConfirmed",
+											"value": "true",
+											"description": "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Внутренняя ошибка сервера",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?page=0&size=5&isConfirmed=true",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										},
+										{
+											"key": "isConfirmed",
+											"value": "true",
+											"description": "Показать подтвержденные или неподтвержденные бронирования (по умолчанию показывает подтвержденные, isConfirmed = true)"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "registration",
+			"item": [
+				{
+					"name": "Регистрация пользователя (доступно только для анонимных пользователей)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"surname\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/registration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Пользователь успешно зарегистрирован",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"surname\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/registration",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "<string>"
+						},
+						{
+							"name": "Такой пользователь уже зарегистрирован или BAD REQUEST",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"surname\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/registration",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Ошибка валидации",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"surname\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/registration",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						},
+						{
+							"name": "Внутренняя ошибка сервера",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"surname\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/registration",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"registration"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "payments",
+					"item": [
+						{
+							"name": "Просмотр всех платежей, пагинация",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/profile/payments?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"profile",
+										"payments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/payments?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"payments"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"resourceName\": \"<string>\",\n  \"paymentMethodCode\": \"<string>\",\n  \"status\": \"<string>\",\n  \"resourceId\": \"<long>\",\n  \"bookingId\": \"<long>\",\n  \"credentials\": \"<string>\",\n  \"amount\": \"<double>\",\n  \"createdAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/payments?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"payments"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не тот, кто нужен",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/payments?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"payments"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/payments?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"payments"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "bookings",
+					"item": [
+						{
+							"name": "Просмотр всех бронирований (подтвержденных и неподтвержденных), пагинация",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/profile/bookings?page=0&size=5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"profile",
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"description": "Номер страницы (начинается от 0)"
+										},
+										{
+											"key": "size",
+											"value": "5",
+											"description": "Размер страницы (по умолчанию - 5)"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Запрос прошел успешно",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/bookings?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"bookings"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"resourceName\": \"<string>\",\n  \"resourceId\": \"<long>\",\n  \"bookingId\": \"<long>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<dateTime>\",\n  \"isConfirmed\": \"<boolean>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\"\n}"
+								},
+								{
+									"name": "Произошла ошибка при выполнении запроса",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/bookings?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"bookings"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Доступ запрещен - скорее всего вы не тот, кто нужен",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/bookings?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"bookings"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Внутренняя ошибка сервера",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/profile/bookings?page=0&size=5",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"profile",
+												"bookings"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0",
+													"description": "Номер страницы (начинается от 0)"
+												},
+												{
+													"key": "size",
+													"value": "5",
+													"description": "Размер страницы (по умолчанию - 5)"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"title\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8089"
+		}
+	]
+}
