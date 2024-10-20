@@ -37,10 +37,9 @@
 - Spring Data JPA
 - Spring Security
 - PostgreSQL
-- Lombok (включая Slf4j для логирования)
+- Lombok
 - Liquibase для миграций
 - Swagger для документации
-- Logback для логирования
 
 ## План выполненных задач:
 
