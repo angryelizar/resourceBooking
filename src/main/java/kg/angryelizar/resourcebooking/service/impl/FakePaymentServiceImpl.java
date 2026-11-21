@@ -45,6 +45,7 @@ public class FakePaymentServiceImpl {
                 .credentials(credentials)
                 .build();
         payment.setUpdatedBy(booking.get().getAuthor());
+        log.info("Проведена оплата брони {} методом {} на сумму {}, реквизиты: {}", bookingId, method, amount, credentials);
         return paymentRepository.save(payment);
     }
 }

@@ -138,7 +138,7 @@ public class BookingServiceImpl implements BookingService {
         // B: дата окончания первого диапазона дат (бронь 1).
         // C: дата начала второго диапазона дат (бронь 2).
         // D: дата окончания второго диапазона дат (бронь 2).
-        return (Math.min(bRes, dRes) - Math.max(aRes, cRes)) > 0;
+        return (Math.min(bRes, dRes) - Math.max(aRes, cRes)) >= 0;
     }
 
     @Override
