@@ -73,8 +73,8 @@ public class ResourceServiceImpl implements ResourceService {
     public HttpStatus delete(Long resourceId, Authentication authentication) {
         Resource resource = resourceRepository.findById(resourceId).orElseThrow(() -> new ResourceException("Этот ресурс не найден, ID " + resourceId));
         User author = userService.checkAdministrator(authentication);
-        bookingService.deleteBookingsByResource(resource);
         resourceRepository.delete(resource);
+        bookingService.deleteBookingsByResource(resource);
 
         log.info("Ресурс {} ({}) удален, автор {} {}", resource.getTitle(), resourceId, author.getName(), author.getSurname());
         return HttpStatus.OK;

@@ -20,8 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b WHERE b.isConfirmed = :isConfirmed " +
             "AND b.resource = :resource AND (b.startDate BETWEEN :startDate " +
-            "AND :endDate OR b.endDate BETWEEN :startDate AND :endDate " +
-            "OR :startDate BETWEEN b.startDate AND b.endDate)")
+            "AND :endDate OR b.endDate BETWEEN :startDate AND :endDate)")
     List<Booking> findByIsConfirmedAndResource(Boolean isConfirmed, Resource resource, LocalDateTime startDate,
                                                LocalDateTime endDate);
 
