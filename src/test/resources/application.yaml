@@ -1,0 +1,21 @@
+# Конфигурация для тестов: H2 в памяти вместо PostgreSQL.
+# Схема и тестовые данные накатываются теми же миграциями Liquibase, что и на проде.
+spring:
+  datasource:
+    url: jdbc:h2:mem:resourcebooking;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  liquibase:
+    change-log: classpath:db/changelog/master.yaml
+  application:
+    name: Resource Booking
+    description: Resource Booking (tests)
+    version: 1.0
+    limitDaysToBook: 360
+  jpa:
+    hibernate:
+      ddl-auto: validate
+logging:
+  level:
+    root: WARN
