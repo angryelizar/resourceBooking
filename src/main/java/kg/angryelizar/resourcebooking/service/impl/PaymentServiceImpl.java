@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     public Payment executePayment(Long bookingId, String method, BigDecimal amount, String credentials) {
 
-        PaymentStrategy paymentStrategy = paymentStrategies.get(method.toLowerCase());
+        PaymentStrategy paymentStrategy = paymentStrategies.get(method.toUpperCase());
         if (paymentStrategy != null) {
             return paymentStrategy.pay(bookingId, method.toLowerCase(), credentials, amount);
         }

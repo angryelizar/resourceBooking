@@ -32,7 +32,12 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<ResourceReadDTO> findAll(Integer page, Integer pageSize, Boolean active) {
-        return resourceRepository.findAllByIsActive(PageRequest.of(page, pageSize), active).getContent().stream().map(this::toResourceReadDto).toList();
+        return resourceRepository.findAll().stream()
+                .filter(resource -> resource.getIsActive().equals(active))
+                .skip((long) page * pageSize)
+                .limit(pageSize)
+                .map(this::toResourceReadDto)
+                .toList();
     }
 
     @Override
