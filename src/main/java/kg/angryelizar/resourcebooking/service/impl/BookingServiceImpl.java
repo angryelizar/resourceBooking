@@ -101,7 +101,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BigDecimal getAmountForBooking(LocalDateTime startDate, LocalDateTime endDate, BigDecimal hourlyRate) {
         // Вычисляем количество секунд между двумя датами
-        long resultBetweenInSeconds = ChronoUnit.SECONDS.between(startDate, endDate);
+        long resultBetweenInSeconds = ChronoUnit.MINUTES.between(startDate, endDate);
 
         // Преобразуем секунды в часы (включая дробную часть)
         double resultBetweenInHours = resultBetweenInSeconds / 3600.0;

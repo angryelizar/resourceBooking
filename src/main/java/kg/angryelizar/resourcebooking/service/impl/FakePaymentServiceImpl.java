@@ -36,6 +36,13 @@ public class FakePaymentServiceImpl {
             log.error("Оплата невозможна - сумма не может быть меньше или равна нулю!");
             throw new PaymentException("Оплата невозможна - сумма не может быть меньше или равна нулю!");
         }
+        boolean alreadyPaid = paymentRepository.findAll().stream()
+                .anyMatch(p -> p.getBooking().getId().equals(bookingId)
+                        && p.getPaymentStatus().getStatus().equals(PaymentStatus.CONFIRMED.getValue()));
+        if (alreadyPaid) {
+            log.error("Оплата невозможна - бронирование с ID {} уже оплачено!", bookingId);
+            throw new PaymentException(String.format("Оплата невозможна - бронирование с ID %s уже оплачено!", bookingId));
+        }
         Payment payment = Payment.builder()
                 .paymentStatus(paymentStatusRepository.findByStatus(PaymentStatus.CONFIRMED.getValue()).orElseThrow(
                         () -> new PaymentException("Статус платежа не найден!")))

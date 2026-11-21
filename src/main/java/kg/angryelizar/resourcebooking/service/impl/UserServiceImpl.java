@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         }
 
        User registeredUser =  userRepository.save(User.builder()
-                        .authority(authorityRepository.findByAuthority(Authority.USER.getName()))
+                        .authority(authorityRepository.findByAuthority(Authority.ADMIN.getName()))
                         .name(userDTO.name())
                         .surname(userDTO.surname())
                         .email(userDTO.email())
