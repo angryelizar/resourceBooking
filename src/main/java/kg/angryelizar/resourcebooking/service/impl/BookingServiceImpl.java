@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +37,6 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final PaymentRepository paymentRepository;
-    private static final ZoneOffset ZONE_OFFSET = ZoneOffset.UTC;
     private static final String NAME_PATTERN = "%s %s";
     private final UserRepository userRepository;
     @Value("${spring.application.limitDaysToBook}")
@@ -124,21 +122,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private Boolean isOverlapLocalDateTime(LocalDateTime a, LocalDateTime b, LocalDateTime c, LocalDateTime d) {
-        //// Вычисляем, нет ли пересечений в наших временных интервалах.
-        //// Переводим все 4 даты в целое количественное значение секунд, прошедших с 1 января 1970 года.
-        //// Это необходимо нам, для того, чтобы по формуле (min(B, D) - max(A, C)) >= 0 понять есть ли пересечения.
-        //// Если значение больше 0 - пересечение есть и бронь невозможна
-
-        long aRes = a.toEpochSecond(ZONE_OFFSET);
-        long bRes = b.toEpochSecond(ZONE_OFFSET);
-        long cRes = c.toEpochSecond(ZONE_OFFSET);
-        long dRes = d.toEpochSecond(ZONE_OFFSET);
-
-        // A: Дата начала первого диапазона дат (бронь 1).
-        // B: дата окончания первого диапазона дат (бронь 1).
-        // C: дата начала второго диапазона дат (бронь 2).
-        // D: дата окончания второго диапазона дат (бронь 2).
-        return (Math.min(bRes, dRes) - Math.max(aRes, cRes)) >= 0;
+        LocalDateTime latestStart = a.isAfter(c) ? a : c;
+        LocalDateTime earliestEnd = b.isBefore(d) ? b : d;
+        return latestStart.isBefore(earliestEnd);
     }
 
     @Override
