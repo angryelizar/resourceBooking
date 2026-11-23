@@ -45,7 +45,11 @@ public class FakePaymentServiceImpl {
                 .credentials(credentials)
                 .build();
         payment.setUpdatedBy(booking.get().getAuthor());
-        log.info("Проведена оплата брони {} методом {} на сумму {}, реквизиты: {}", bookingId, method, amount, credentials);
+        String cardSuffix = "";
+        if ("CARD".equalsIgnoreCase(method) && credentials != null && credentials.matches("[0-9]{13,19}")) {
+            cardSuffix = ", карта: ****" + credentials.substring(credentials.length() - 4);
+        }
+        log.info("Проведена оплата брони {} методом {} на сумму {}{}", bookingId, method, amount, cardSuffix);
         return paymentRepository.save(payment);
     }
 }
