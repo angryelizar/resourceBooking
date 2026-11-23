@@ -62,6 +62,7 @@ public class ResourceServiceImpl implements ResourceService {
         resource.setDescription(resourceDTO.description());
         resource.setIsActive(resourceDTO.isActive());
         resource.setUpdatedBy(author);
+        resource.setHourlyRate(BigDecimal.valueOf(resourceDTO.hourlyRate()));
         resourceRepository.save(resource);
 
         log.info("Ресурс {} обновлен, автор изменений - {} {}", resourceDTO.title(), author.getName(), author.getSurname());

@@ -1,9 +1,11 @@
 package kg.angryelizar.resourcebooking.service;
 
+import jakarta.persistence.EntityManager;
 import kg.angryelizar.resourcebooking.dto.BookingCreateDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceCreateEditDTO;
 import kg.angryelizar.resourcebooking.dto.ResourceReadDTO;
 import kg.angryelizar.resourcebooking.exceptions.UserException;
+import kg.angryelizar.resourcebooking.model.Resource;
 import kg.angryelizar.resourcebooking.repository.BookingRepository;
 import kg.angryelizar.resourcebooking.repository.ResourceRepository;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,8 @@ class ResourceServiceTest {
     private ResourceRepository resourceRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     private static final ResourceCreateEditDTO NEW_RESOURCE =
             new ResourceCreateEditDTO("Переговорная 3", "Третий этаж", true, 150.0);
@@ -39,6 +43,22 @@ class ResourceServiceTest {
         assertThat(created.title()).isEqualTo("Переговорная 3");
         assertThat(created.isActive()).isTrue();
         assertThat(created.hourlyRate()).isEqualTo(150.0);
+    }
+
+    @Test
+    void adminUpdatesResourceHourlyRate() {
+        ResourceCreateEditDTO initial = new ResourceCreateEditDTO("Переговорная 3", "Третий этаж", true, 100.0);
+        ResourceReadDTO created = resourceService.create(initial, auth(ADMIN_EMAIL));
+        ResourceCreateEditDTO changes = new ResourceCreateEditDTO("Переговорная 3", "Третий этаж", true, 300.0);
+
+        ResourceReadDTO updated = resourceService.update(created.id(), changes, auth(ADMIN_EMAIL));
+
+        entityManager.flush();
+        entityManager.clear();
+        Resource saved = resourceRepository.findById(created.id()).orElseThrow();
+
+        assertThat(updated.hourlyRate()).isEqualTo(300.0);
+        assertThat(saved.getHourlyRate()).isEqualByComparingTo("300");
     }
 
     @Test
